@@ -18,6 +18,7 @@ enum VectorErrors
     Y_COORD_IS_NAN = 1 << 1
 };
 
+
 void    VectorCtor  (Vector *vec, const double x, const double y);
 
 void    VectorDtor  (Vector *vec);
@@ -28,5 +29,14 @@ Vector  VectorAdd        (Vector *vec1, Vector *vec2);
 Vector  VectorSub        (Vector *vec1, Vector *vec2);
 
 Vector  VectorMultScalar (Vector *vec, const double num);
+
+
+typedef Vector Dot;
+
+const Dot Null_dot = {0, 0};
+
+const Vector Unit_vector_x = {1, 0};
+const Vector Unit_vector_y = {0, 1};
+
 
 #endif //#endif _VECTOR_H_
