@@ -1,5 +1,10 @@
-#include "generals_func/generals.h"
-#include "log_info/log_errors.h"
+#ifndef _VECTOR_H_
+#define _VECTOR_H_
+
+#include "../generals_func/generals.h"
+#include "../log_info/log_errors.h"
+
+#define USE_DUMP
 
 struct Vector 
 {
@@ -7,7 +12,21 @@ struct Vector
     double y = 0;
 };
 
-void VectorCtor (const Vector *vec, const double x, const double y);
+enum VectorErrors
+{
+    X_COORD_IS_NAN = 1 << 0, 
+    Y_COORD_IS_NAN = 1 << 1
+};
+
+void    VectorCtor  (Vector *vec, const double x, const double y);
+
+void    VectorDtor  (Vector *vec);
 
 
-void VectorDtor (Vector *vec);
+Vector  VectorAdd        (Vector *vec1, Vector *vec2);
+
+Vector  VectorSub        (Vector *vec1, Vector *vec2);
+
+Vector  VectorMultScalar (Vector *vec, const double num);
+
+#endif //#endif _VECTOR_H_
