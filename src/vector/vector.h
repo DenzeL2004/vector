@@ -24,11 +24,11 @@ void    VectorCtor  (Vector *vec, const double x, const double y);
 void    VectorDtor  (Vector *vec);
 
 
-Vector  VectorSum        (Vector *vec1, Vector *vec2);
+Vector  VectorSum        (const Vector *vec1, const Vector *vec2);
 
-Vector  VectorSub        (Vector *vec1, Vector *vec2);
+Vector  VectorSub        (const Vector *vec1, const Vector *vec2);
 
-Vector  VectorMultScalar (Vector *vec, const double num);
+Vector  VectorMultScalar (const Vector *vec, const double num);
 
 
 typedef Vector Dot;

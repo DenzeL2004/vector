@@ -9,12 +9,6 @@
 
 #include "../plane/plane.h"
 
-struct Coord_plane
-{
-    sf::Image coord_plane_img;
-    Plane plane; 
-};
-
 struct Vectors_info
 {
     uint32_t vectors_cnt = 0;
@@ -23,23 +17,13 @@ struct Vectors_info
     char *vectors_draw_flag = nullptr;
 };
 
-// enum Graphic_errors
-// {
 
-// };
+
+int ShowWindow();
 
 
 void VectorsInfoCtor (Vectors_info *vector_info);
 
-void VectorsInfoCtor (Vectors_info *vector_info);
-
-
-
-void CoordPlaneCtor (Coord_plane *coord_plane, 
-                    const Dot plane_origin, uint32_t plane_hight, const uint32_t plane_weight, 
-                    const Dot axis_origin, const Vector abscissa, const Vector ordinate);
-
-void CoordPlaneDtor (Coord_plane *coord_plane);
-
+void VectorsInfoDtor (Vectors_info *vector_info);
 
 #endif //#endif _GRAPHIC_H_

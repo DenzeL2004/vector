@@ -7,8 +7,11 @@ FLAGS = -Wshadow -Winit-self -Wredundant-decls -Wcast-align -Wundef -Wfloat-equa
 		-Wtype-limits -Wwrite-strings -D_DEBUG -D_EJUDGE_CLIENT_SIDE
 
 
-run:		obj/generals.o obj/log_errors.o obj/vector.o obj/main.o
-	g++   	obj/generals.o obj/log_errors.o obj/vector.o obj/main.o -o run 
+SFML_FLAGS = -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
+
+
+run:		obj/generals.o obj/log_errors.o obj/vector.o obj/plane.o obj/graphic.o obj/main.o
+	g++   	obj/generals.o obj/log_errors.o obj/vector.o obj/plane.o obj/graphic.o obj/main.o -o run  $(SFML_FLAGS)
 
 
 obj/main.o: main.cpp
@@ -17,7 +20,7 @@ obj/main.o: main.cpp
 
 
 obj/log_errors.o: src/log_info/log_errors.h src/log_info/log_errors.cpp
-			  g++ src/log_info/log_errors.cpp -c -o obj/log_errors.o $(FLAGS)
+			g++ src/log_info/log_errors.cpp -c -o obj/log_errors.o $(FLAGS)
 
 obj/generals.o: src/generals_func/generals.cpp src/generals_func/generals.h
 			g++ src/generals_func/generals.cpp -c -o obj/generals.o $(FLAGS)
@@ -25,6 +28,15 @@ obj/generals.o: src/generals_func/generals.cpp src/generals_func/generals.h
 
 obj/vector.o: src/vector/vector.cpp src/vector/vector.h
 		g++ src/vector/vector.cpp -c -o obj/vector.o $(FLAGS)
+
+
+obj/graphic.o: src/graphic/graphic.cpp src/graphic/graphic.h src/graphic/graphic_config.h
+		g++    src/graphic/graphic.cpp -c -o obj/graphic.o $(FLAGS) $(SFML_FLAGS)
+
+
+obj/plane.o: src/plane/plane.cpp src/plane/plane.h
+		g++ src/plane/plane.cpp -c -o obj/plane.o $(FLAGS)
+
 
 .PHONY: cleanup mkdirectory
 

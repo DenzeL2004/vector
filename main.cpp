@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#include "src/vector/vector.h"
+#include "src/graphic/graphic.h"
 
 int main()
 {
@@ -9,6 +9,8 @@ int main()
             return OPEN_FILE_LOG_ERR;
     #endif
 
+
+    ShowWindow();
     
 
     #ifdef USE_LOG

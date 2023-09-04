@@ -1,9 +1,9 @@
 #include "vector.h"
 
 
-uint32_t    VectorVerification  (Vector *vec);
+uint32_t    VectorVerification  (const Vector *vec);
 
-void        VectorDump          (Vector *vec);
+void        VectorDump          (const Vector *vec);
 
 
 void VectorCtor (Vector *vec, const double x, const double y)
@@ -26,7 +26,7 @@ void VectorDtor (Vector *vec)
     return;
 }
 
-Vector VectorSum (Vector *vec1, Vector *vec2)
+Vector VectorSum (const Vector *vec1, const Vector *vec2)
 {
     assert(vec1 != nullptr && "vec1 pointer is nullptr");
     assert(vec2 != nullptr && "vec2 pointer is nullptr");
@@ -40,7 +40,7 @@ Vector VectorSum (Vector *vec1, Vector *vec2)
     return res;
 }
 
-Vector VectorSub (Vector *vec1, Vector *vec2)
+Vector VectorSub (const Vector *vec1, const Vector *vec2)
 {
     assert(vec1 != nullptr && "vec1 pointer is nullptr");
     assert(vec2 != nullptr && "vec2 pointer is nullptr");
@@ -54,7 +54,7 @@ Vector VectorSub (Vector *vec1, Vector *vec2)
     return res;
 }
 
-Vector VectorMultScalar (Vector *vec, const double num)
+Vector VectorMultScalar (const Vector *vec, const double num)
 {
     assert(vec != nullptr && "vec pointer is nullptr");
     
@@ -67,7 +67,7 @@ Vector VectorMultScalar (Vector *vec, const double num)
     return res;
 }
 
-uint32_t VectorVerification (Vector *vec)
+uint32_t VectorVerification (const Vector *vec)
 {
     assert(vec != nullptr && "vec pointer is nullptr");
 
@@ -80,7 +80,7 @@ uint32_t VectorVerification (Vector *vec)
     return error_code;
 }
 
-void VectorDump (Vector *vec)
+void VectorDump (const Vector *vec)
 {
     assert(vec != nullptr && "vec pointer is nullptr");
 
