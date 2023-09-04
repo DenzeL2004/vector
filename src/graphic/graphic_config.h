@@ -19,7 +19,7 @@ const uint32_t left_plane_weight = Default_plane_weight;
 
 const Dot      left_axis_origin  = {100, 100};
 const Vector   left_abscissa     = {10, 0};
-const Vector   left_ordinate     = {0, 10};
+const Vector   left_ordinate     = {0, -10};
 
 //RIGHT COORD PLANE
 const Dot      right_plane_origin = Right_corner;
@@ -28,13 +28,14 @@ const uint32_t right_plane_weight = Default_plane_weight;
 
 const Dot      right_axis_origin  = {300, 500};
 const Vector   right_abscissa     = {10, 10};
-const Vector   right_ordinate     = {-10, 10};
+const Vector   right_ordinate     = {-10, -20};
 
 //===============================================================================
 
 const uint32_t Max_limit_vector_cnt = 100;
 
-const float Stroke_radius = 1.f;
+const float Stroke_radius = 1.5f;
 
+const sf::Color Default_vec_color = sf::Color::Red;
 
 #endif //#endif _GRAPHIC_CONFIG_H_
