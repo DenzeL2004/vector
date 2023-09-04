@@ -2,8 +2,6 @@
 
 #include "plane.h"
 
-
-
 void PlaneCtor (Plane *plane, 
                 const Dot plane_origin, uint32_t plane_hight, const uint32_t plane_weight, 
                 const Dot axis_origin, const Vector abscissa, const Vector ordinate)
@@ -33,11 +31,5 @@ void PlaneDtor (Plane *plane)
     plane->abscissa     = Null_dot;
     plane->ordinate     = Null_dot;
 
-    return;
-}
-
-void DrawVector()
-{
-    
     return;
 }

@@ -26,7 +26,7 @@ void VectorDtor (Vector *vec)
     return;
 }
 
-Vector VectorAdd (Vector *vec1, Vector *vec2)
+Vector VectorSum (Vector *vec1, Vector *vec2)
 {
     assert(vec1 != nullptr && "vec1 pointer is nullptr");
     assert(vec2 != nullptr && "vec2 pointer is nullptr");

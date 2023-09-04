@@ -12,7 +12,7 @@ struct Vector
     double y = 0;
 };
 
-enum VectorErrors
+enum Vector_errors
 {
     X_COORD_IS_NAN = 1 << 0, 
     Y_COORD_IS_NAN = 1 << 1
@@ -24,7 +24,7 @@ void    VectorCtor  (Vector *vec, const double x, const double y);
 void    VectorDtor  (Vector *vec);
 
 
-Vector  VectorAdd        (Vector *vec1, Vector *vec2);
+Vector  VectorSum        (Vector *vec1, Vector *vec2);
 
 Vector  VectorSub        (Vector *vec1, Vector *vec2);
 
