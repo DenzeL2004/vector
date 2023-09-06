@@ -11,7 +11,8 @@ int main()
 
 
     ShowWindow();
-    
+
+
 
     #ifdef USE_LOG
         if (CloseLogsFile ())
