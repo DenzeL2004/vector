@@ -12,7 +12,7 @@ void PlaneCtor (Plane *plane,
     plane->plane_hight  = plane_hight;
     plane->plane_weight = plane_weight;
 
-    plane->axis_origin  = VectorSum(&axis_origin, &plane_origin);
+    plane->axis_origin  = axis_origin + plane_origin;
     plane->abscissa     = abscissa;
     plane->ordinate     = ordinate;
 
