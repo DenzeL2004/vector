@@ -11,14 +11,14 @@ static void     DrawAxis    (sf::RenderWindow *window, const Plane *coord_plane,
 
 
 static void     DrawLine    (sf::RenderWindow *window, const Plane *coord_plane, 
-                             const Dot dot_begin, const Dot dot_end, const sf::Color color_line);
+                             const Dot *dot_begin, const Dot *dot_end, const sf::Color color_line);
 
-static void     DrawCircle  (sf::RenderWindow *window, const Dot dot, 
+static void     DrawCircle  (sf::RenderWindow *window, const Dot *dot, 
                              const float radius, const sf::Color color);
 
 
 static void     DrawVector  (sf::RenderWindow *window, const Plane *coord_plane, 
-                             const Dot dot_start, const Vector dir);
+                             const Dot *dot_start, const Vector *dir);
 
 
 int ShowWindow()
@@ -37,8 +37,8 @@ int ShowWindow()
     char update_window_flag = TRUE;
 
     Vector vec = {10, -10}; //check maybe vector too long 
-    DrawVector(&window, &left_coord_plane, {10, 2}, vec);
-    DrawVector(&window, &right_coord_plane, {10, 2}, vec);
+    // DrawVector(&window, &left_coord_plane, {10, 2}, &vec);
+    // DrawVector(&window, &right_coord_plane, {10, 2}, &vec);
 
     while (window.isOpen())
     {
@@ -133,8 +133,8 @@ static void DrawAxis(sf::RenderWindow *window, const Plane *coord_plane, const V
     while (dot_next.x < right_border && dot_next.x > left_border &&
            dot_next.y < down_border  && dot_next.y > up_border)
     {
-        DrawLine(window, coord_plane, dot_prev, dot_next, sf::Color::Blue);
-        DrawCircle(window, dot_prev, Stroke_radius, sf::Color::Blue);
+        DrawLine(window, coord_plane, &dot_prev, &dot_next, sf::Color::Blue);
+        DrawCircle(window, &dot_prev, Stroke_radius, sf::Color::Blue);
 
 
         dot_prev = VectorSum(&dot_next, &Null_dot);   
@@ -151,15 +151,16 @@ static void DrawAxis(sf::RenderWindow *window, const Plane *coord_plane, const V
 
 //===============================================================================
 
-static void DrawCircle(sf::RenderWindow *window, const Dot dot, 
+static void DrawCircle(sf::RenderWindow *window, const Dot *dot, 
                        const float radius, const sf::Color color)
 {
     assert(window != nullptr && "window pointer is nullptr");
+    assert(dot != nullptr && "dot pointer is nullptr");
 
     sf::CircleShape circle(radius);
     circle.setFillColor(color);
 
-    circle.setPosition((float)dot.x, (float)dot.y);
+    circle.setPosition((float)dot->x, (float)dot->y);
 
     (*window).draw(circle);
 
@@ -170,17 +171,20 @@ static void DrawCircle(sf::RenderWindow *window, const Dot dot,
 //===============================================================================
 
 static void DrawLine(sf::RenderWindow *window, const Plane *coord_plane, 
-                    const Dot dot_begin, const Dot dot_end, const sf::Color color_line)
+                    const Dot *dot_begin, const Dot *dot_end, const sf::Color color_line)
 {
     assert(window != nullptr && "window pointer is nullptr");
     assert(coord_plane != nullptr && "coord_plane pointer is nullptr");
+
+    assert(dot_begin != nullptr && "dot_begin pointer is nullptr");
+    assert(dot_end   != nullptr && "dot_end pointer is nullptr");
 
     //TODO MUST BE CHECK THAT LINE can be too long then plane
 
     sf::Vertex line[] =
     {
-        sf::Vertex(sf::Vector2f((float)dot_begin.x, (float)dot_begin.y), color_line),
-        sf::Vertex(sf::Vector2f((float)dot_end.x, (float)dot_end.y), color_line)
+        sf::Vertex(sf::Vector2f((float)dot_begin->x, (float)dot_begin->y), color_line),
+        sf::Vertex(sf::Vector2f((float)dot_end->x, (float)dot_end->y), color_line)
     };
 
     (*window).draw(line, 2, sf::Lines);
@@ -190,20 +194,23 @@ static void DrawLine(sf::RenderWindow *window, const Plane *coord_plane,
 }
 
 static void DrawVector(sf::RenderWindow *window, const Plane *coord_plane, 
-                    const Dot dot_start, const Vector dir)
+                    const Dot *dot_start, const Vector *dir)
 {
     assert(window != nullptr && "window pointer is nullptr");
     assert(coord_plane != nullptr && "coord_plane pointer is nullptr");
 
+    assert(dot_start != nullptr && "dot_start pointer is nullptr");
+    assert(dir   != nullptr && "dir pointer is nullptr");
+
     //refactory later
 
-    Vector vec1 = VectorMultScalar(&coord_plane->abscissa, dot_start.x);
-    Vector vec2 = VectorMultScalar(&coord_plane->ordinate, dot_start.y); 
+    Vector vec1 = VectorMultScalar(&coord_plane->abscissa, dot_start->x);
+    Vector vec2 = VectorMultScalar(&coord_plane->ordinate, dot_start->y); 
     Dot dot_begin = VectorSum(&vec1, &vec2);
     dot_begin = VectorSum(&coord_plane->axis_origin, &dot_begin);
 
-     vec1 = VectorMultScalar(&coord_plane->abscissa, dir.x);
-     vec2 = VectorMultScalar(&coord_plane->ordinate, dir.y);
+    vec1 = VectorMultScalar(&coord_plane->abscissa, dir->x);
+    vec2 = VectorMultScalar(&coord_plane->ordinate, dir->y);
     Dot dot_end = VectorSum(&vec1, &vec2);
     dot_end = VectorSum(&dot_begin, &dot_end);
 
@@ -211,7 +218,7 @@ static void DrawVector(sf::RenderWindow *window, const Plane *coord_plane,
 
    // printf ()
 
-    DrawLine(window, coord_plane, dot_begin, dot_end, Default_vec_color);
+    DrawLine(window, coord_plane, &dot_begin, &dot_end, Default_vec_color);
 
     sf::CircleShape circle(Stroke_radius);
     circle.setFillColor(Default_vec_color);
