@@ -1,3 +1,4 @@
 obj/
 temp/
 run
+.vscode/settings.json

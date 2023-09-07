@@ -39,6 +39,8 @@ const uint32_t Max_limit_vector_cnt = 100;
 
 const float Stroke_radius = 1.5f;
 
+const double Len_tendril = 15.0;
+
 const sf::Color Default_vec_color = sf::Color::Red;
 const sf::Color Default_axis_color = sf::Color::Black;
 

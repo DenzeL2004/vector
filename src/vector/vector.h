@@ -34,6 +34,11 @@ class Vector
         Vector& operator -= (const Vector &other);
         Vector& operator *= (const double scale);
 
+        Vector  operator ~ ();
+        Vector  operator & ();
+        double  operator ! ();
+
+
     private:     
         double x_;
         double y_;
@@ -58,6 +63,8 @@ const Dot Null_dot = Vector(0.0, 0.0);
 
 const Vector Unit_vector_x = Vector(1.0, 0.0);
 const Vector Unit_vector_y = Vector(0.0, 1.0);
+
+const Vector Err_vector    = Vector(NAN, NAN);
 
 
 #endif //#endif _VECTOR_H_

@@ -36,7 +36,8 @@ int ShowWindow()
 
     char update_window_flag = TRUE;
 
-    Vector vec = Vector(10, -10); //check maybe vector too long 
+    Vector vec(20.0, -20.0);
+    Dot dot(10, 3);
     DrawVector(window, left_coord_plane, Null_dot, vec);
 
     while (window.isOpen())
@@ -179,7 +180,6 @@ static void DrawLine(sf::RenderWindow &window,
 static void DrawVector(sf::RenderWindow &window, const Plane &coord_plane, 
                        const Dot &dot_start, const Vector &dir)
 {
-    //refactory later
 
     Vector vec1 = coord_plane.abscissa * dot_start.GetX();
     Vector vec2 = coord_plane.ordinate * dot_start.GetY();
@@ -190,52 +190,23 @@ static void DrawVector(sf::RenderWindow &window, const Plane &coord_plane,
     vec2 = coord_plane.ordinate * dir.GetY();
     
     Dot dot_end = vec1 + vec2 + dot_begin;
-    
 
-   // printf ()
 
     DrawLine(window, dot_begin, dot_end, Default_vec_color);
 
-    sf::CircleShape circle(Stroke_radius);
-    circle.setFillColor(Default_vec_color);
+    Vector norm_res = ~ dot_end;
+    Vector norm_ort = ~ (&dot_end);
 
-    circle.setPosition((float)dot_end.GetX(), (float)dot_end.GetY());
+    Vector tendril1 = (~(norm_ort - norm_res)) * Len_tendril;
+    Vector tendril2 = (~(norm_ort + norm_res)) * Len_tendril;
 
-    window.draw(circle);
+    DrawLine(window, dot_end, dot_end + tendril1, Default_vec_color);
+    DrawLine(window, dot_end, dot_end - tendril2, Default_vec_color);
 
     return;
    
 }
 
-//===============================================================================
 
-void VectorsInfoCtor (Vectors_info *vector_info)
-{
-    assert(vector_info != nullptr && "vector_info pointer is nullptr");
-
-    vector_info->vectors_cnt = 0;
-    
-    vector_info->vectors = (Vector*) calloc(Max_limit_vector_cnt, sizeof(Vector));
-    assert(vector_info->vectors != nullptr && "allocate memory failed");
-    
-    vector_info->vectors_draw_flag = (char*) calloc(Max_limit_vector_cnt, sizeof(char));
-    assert(vector_info->vectors_draw_flag != nullptr && "allocate memory failed");
-
-    return;
-}
-
-//===============================================================================
-
-void VectorsInfoDtor (Vectors_info *vector_info)
-{
-    assert(vector_info != nullptr && "vector_info pointer is nullptr");
-
-    vector_info->vectors_cnt = 0;
-    
-    free(vector_info->vectors);
-    free(vector_info->vectors_draw_flag);
-
-    return;
-}
 
 //===============================================================================
