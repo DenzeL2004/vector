@@ -29,6 +29,15 @@ Vector& Vector::operator *= (const double scale)
 
 //=======================================================================
 
+Vector& Vector::operator /= (const double scale)
+{
+    this->x_ /= scale;
+    this->y_ /= scale;
+    return *this;
+}
+
+//=======================================================================
+
 double Vector::operator ! ()
 {
     double len = (this->x_ * this->x_) + 
@@ -61,6 +70,16 @@ Vector Vector::operator & ()
     return res;
 }
 
+//=======================================================================
+
+Vector Vector::operator - ()
+{
+    Vector res = *this;
+    res *= -1;
+    
+    return res;
+}
+
 
 //=======================================================================
 
@@ -88,6 +107,24 @@ Vector operator * (const Vector &vec, const double scale)
 {
     Vector res = vec;
     res *= scale;
+
+    return res;
+}
+
+Vector operator * (const double scale, const Vector &vec)
+{
+    Vector res = vec;
+    res *= scale;
+
+    return res;
+}
+
+//=======================================================================
+
+Vector operator / (const Vector &vec, const double scale)
+{
+    Vector res = vec;
+    res /= scale;
 
     return res;
 }

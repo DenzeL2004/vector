@@ -20,8 +20,8 @@ const Dot      left_plane_origin = Left_corner;
 const uint32_t left_plane_hight  = Default_plane_hight;
 const uint32_t left_plane_weight = Default_plane_weight;
 
-const Dot      left_axis_origin  = Vector(100.0, 100.0);
-const Vector   left_abscissa     = Vector(10.0, 0.0);
+const Dot      left_axis_origin  = Vector(150.0, 800.0);
+const Vector   left_abscissa     = Vector(10.00, 0.00);
 const Vector   left_ordinate     = Vector(0.0, -10.0);
 
 //RIGHT COORD PLANE
@@ -39,9 +39,11 @@ const uint32_t Max_limit_vector_cnt = 100;
 
 const float Stroke_radius = 1.5f;
 
-const double Len_tendril = 15.0;
+const double Len_tendril = 1.0;
 
 const sf::Color Default_vec_color = sf::Color::Red;
 const sf::Color Default_axis_color = sf::Color::Black;
+
+const useconds_t Mouse_press_delay = 50U;
 
 #endif //#endif _GRAPHIC_CONFIG_H_

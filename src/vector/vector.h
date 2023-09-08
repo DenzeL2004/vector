@@ -33,6 +33,9 @@ class Vector
         Vector& operator += (const Vector &other);
         Vector& operator -= (const Vector &other);
         Vector& operator *= (const double scale);
+        Vector& operator /= (const double scale);
+
+        Vector  operator - ();
 
         Vector  operator ~ ();
         Vector  operator & ();
@@ -52,10 +55,14 @@ enum Vector_errors
 
 
 Vector operator + (const Vector &vec1, const Vector &vec2);
-
 Vector operator - (const Vector &vec1, const Vector &vec2);
 
 Vector operator * (const Vector &vec, const double scale);
+Vector operator * (const double scale, const Vector &vec);
+
+Vector operator / (const Vector &vec, const double scale);
+
+
 
 typedef Vector Dot;
 
