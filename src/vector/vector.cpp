@@ -31,8 +31,8 @@ Vector& Vector::operator *= (const double scale)
 
 double Vector::operator ! ()
 {
-    double len = this->x_ * this->x_ + 
-                 this->y_ * this->y_;
+    double len = (this->x_ * this->x_) + 
+                 (this->y_ * this->y_);
 
     len = sqrt(len);
 

@@ -16,9 +16,17 @@ static void     DrawLine    (sf::RenderWindow &window,
 static void     DrawCircle  (sf::RenderWindow &window, const Dot &dot, 
                              const float radius, const sf::Color color);
 
-
 static void     DrawVector  (sf::RenderWindow &window, const Plane &coord_plane, 
                              const Dot &dot_start, const Vector &dir);
+
+
+static int      CheckDotOnPlane (const Plane &coord_plane, Dot &dot);
+
+
+static char     DrawOnButton    (sf::RenderWindow &window, 
+                                 Plane &left_coord_plane, Plane &right_coord_plane);
+
+static Dot      ZoomDot         (const Plane &coord_plane, const Dot &dot);
 
 
 int ShowWindow()
@@ -36,19 +44,25 @@ int ShowWindow()
 
     char update_window_flag = TRUE;
 
-    Vector vec(20.0, -20.0);
+    Vector vec(-1.0, 1.0);
     Dot dot(10, 3);
     DrawVector(window, left_coord_plane, Null_dot, vec);
 
+
+    sf::Event event;
     while (window.isOpen())
     {
-        sf::Event event;
+        
         while (window.pollEvent(event))
         {
             if (event.type == sf::Event::Closed)
                 window.close();
         }
 
+        if(event.type == sf::Event::MouseButtonPressed)
+        {
+            update_window_flag = DrawOnButton(window, left_coord_plane, right_coord_plane);
+        }
 
         if (update_window_flag == TRUE)
         {
@@ -110,29 +124,15 @@ static void DrawEmptyPlane(sf::RenderWindow &window, const Plane &coord_plane)
 
 static void DrawAxis(sf::RenderWindow &window, const Plane &coord_plane, const Vector &dir)
 {
-
-    double left_border  = coord_plane.plane_origin.GetX();
-    double right_border = coord_plane.plane_origin.GetX() + (double)coord_plane.plane_weight;
-    
-    double up_border   = coord_plane.plane_origin.GetY();
-    double down_border = coord_plane.plane_origin.GetY() + (double)coord_plane.plane_hight;
-
     Dot dot_prev = coord_plane.axis_origin;
     Dot dot_next = dot_prev + dir;
 
-    double dot_next_x = dot_next.GetX();
-    double dot_next_y = dot_next.GetY();
-
-    while (dot_next_x < right_border && dot_next_x > left_border &&
-           dot_next_y < down_border  && dot_next_y > up_border)
+    while (CheckDotOnPlane(coord_plane, dot_next))
     {
         DrawCircle(window, dot_prev, Stroke_radius, Default_axis_color);
 
         dot_prev  = dot_next;   
         dot_next += dir;       
-
-        dot_next_x = dot_next.GetX();
-        dot_next_y = dot_next.GetY();
     }
     
     DrawLine(window, coord_plane.axis_origin, dot_prev, Default_axis_color);
@@ -162,9 +162,6 @@ static void DrawCircle(sf::RenderWindow &window, const Dot &dot,
 static void DrawLine(sf::RenderWindow &window, 
                     const Dot &dot_begin, const Dot &dot_end, const sf::Color color_line)
 {
-
-    //TODO MUST BE CHECK THAT LINE can be too long then plane
-
     sf::Vertex line[] =
     {
         sf::Vertex(sf::Vector2f((float)dot_begin.GetX(), (float)dot_begin.GetY()), color_line),
@@ -177,36 +174,100 @@ static void DrawLine(sf::RenderWindow &window,
    
 }
 
+//===============================================================================
+
 static void DrawVector(sf::RenderWindow &window, const Plane &coord_plane, 
                        const Dot &dot_start, const Vector &dir)
 {
 
-    Vector vec1 = coord_plane.abscissa * dot_start.GetX();
-    Vector vec2 = coord_plane.ordinate * dot_start.GetY();
-
-    Dot dot_begin = vec1 + vec2 + coord_plane.axis_origin;
-
-    vec1 = coord_plane.abscissa * dir.GetX();
-    vec2 = coord_plane.ordinate * dir.GetY();
+    Vector norm_res = ~ (Vector)dir;
+    Vector norm_ort = (&norm_res); 
     
-    Dot dot_end = vec1 + vec2 + dot_begin;
+    Vector tendril1 = ~((norm_ort + norm_res));
+    Vector tendril2 = ~((norm_res - norm_ort));
 
+    tendril1 *= (!(Vector)dir) / 5.0;
+    tendril2 *= (!(Vector)dir) / 5.0;
+
+    Dot coord1 = dir - tendril1;
+    Dot coord2 = dir - tendril2;
+
+    Dot dot_begin = ZoomDot(coord_plane, dot_start) + coord_plane.axis_origin;
+    Dot dot_end   = ZoomDot(coord_plane, dir) + dot_begin;
+
+    if (!CheckDotOnPlane(coord_plane, dot_begin) ||
+        !CheckDotOnPlane(coord_plane, dot_end))
+    {
+        printf("line cannot be drawn because one of the coordinates is out of plane's bounds");
+        return;
+    }
 
     DrawLine(window, dot_begin, dot_end, Default_vec_color);
 
-    Vector norm_res = ~ dot_end;
-    Vector norm_ort = ~ (&dot_end);
+    Dot zoom_coord1 = ZoomDot(coord_plane, coord1) + dot_begin;
+    Dot zoom_coord2 = ZoomDot(coord_plane, coord2) + dot_begin;;
 
-    Vector tendril1 = (~(norm_ort - norm_res)) * Len_tendril;
-    Vector tendril2 = (~(norm_ort + norm_res)) * Len_tendril;
-
-    DrawLine(window, dot_end, dot_end + tendril1, Default_vec_color);
-    DrawLine(window, dot_end, dot_end - tendril2, Default_vec_color);
+    DrawLine(window, dot_end, zoom_coord1, Default_vec_color);
+    DrawLine(window, dot_end, zoom_coord2, Default_vec_color);
 
     return;
    
 }
 
+static Dot ZoomDot(const Plane &coord_plane, const Dot &dot)
+{
+    Vector vec1 = coord_plane.abscissa * dot.GetX();
+    Vector vec2 = coord_plane.ordinate * dot.GetY();
 
+    Dot new_dot = vec1 + vec2;
+
+    return new_dot;
+}
 
 //===============================================================================
+
+
+static int CheckDotOnPlane(const Plane &coord_plane, Dot &dot)
+{
+
+    double left_border  = coord_plane.plane_origin.GetX();
+    double right_border = coord_plane.plane_origin.GetX() + (double)coord_plane.plane_weight;
+    
+    double up_border   = coord_plane.plane_origin.GetY();
+    double down_border = coord_plane.plane_origin.GetY() + (double)coord_plane.plane_hight;
+
+    double dot_x = dot.GetX();
+    double dot_y = dot.GetY();
+
+    return  (dot_x < right_border) && (dot_x > left_border) &&
+            (dot_y < down_border)  && (dot_y > up_border);  
+}
+
+//===============================================================================
+
+static char DrawOnButton(sf::RenderWindow &window, 
+                         Plane &left_coord_plane, Plane &right_coord_plane)
+{
+    Dot mouse_coord((double)sf::Mouse::getPosition(window).x, 
+                    (double)sf::Mouse::getPosition(window).y);
+
+    
+    printf ("%lg %lg\n", mouse_coord.GetX(), mouse_coord.GetY());
+
+    if (CheckDotOnPlane(left_coord_plane, mouse_coord))
+    {
+        mouse_coord = mouse_coord - left_coord_plane.plane_origin;
+        DrawVector(window, left_coord_plane, Null_dot, ~mouse_coord);
+
+        return TRUE;
+    }
+    else if (CheckDotOnPlane(right_coord_plane, mouse_coord))
+    {
+        mouse_coord = mouse_coord - right_coord_plane.plane_origin;
+        DrawVector(window, right_coord_plane, Null_dot, ~mouse_coord);
+
+        return TRUE;
+    } 
+
+    return FALSE;
+}
