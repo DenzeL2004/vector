@@ -10,15 +10,14 @@
 #include "../plane/plane.h"
 
 
-int ShowWindow();
+int     ShowWindow  (const Vector *vectors, size_t cnt_vec);
 
 
-
-void     DrawLine    (sf::RenderWindow &window, 
+void    DrawLine    (sf::RenderWindow &window, 
                       const Dot &dot_begin, const Dot &dot_end, const sf::Color color_line);
 
-void     DrawCircle  (sf::RenderWindow &window, const Dot &dot, 
-                      const float radius, const sf::Color color);
+void    DrawCircle  (sf::RenderWindow &window, const Dot &dot, 
+                     const float radius, const sf::Color color);
 
 
 

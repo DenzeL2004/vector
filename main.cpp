@@ -1,6 +1,7 @@
 #include <stdio.h>
 
 #include "src/graphic/graphic.h"
+#include "src/graphic/graphic_config.h"
 
 int main()
 {
@@ -10,9 +11,7 @@ int main()
     #endif
 
 
-    ShowWindow();
-
-
+    ShowWindow(Example_vectors, Count_example_vec);
 
     #ifdef USE_LOG
         if (CloseLogsFile ())

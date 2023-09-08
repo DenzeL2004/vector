@@ -26,8 +26,10 @@ static void     DrawVectorByMouse   (sf::RenderWindow &window, Plane &coord_plan
 
 
 
-int ShowWindow()
+int ShowWindow(const Vector *vectors, size_t cnt_vec)
 {
+    assert(vectors != nullptr && "vectors is nullptr");
+
     sf::RenderWindow window(sf::VideoMode(Default_window_weight, Default_window_hight), "Vectors");
 
     Plane left_coord_plane;
@@ -39,11 +41,13 @@ int ShowWindow()
     DrawEmptyPlane(window, left_coord_plane);
     DrawEmptyPlane(window, right_coord_plane);
 
+    for (size_t i = 0; i < cnt_vec; i++)
+    {
+        DrawVector(window, left_coord_plane, Null_dot, vectors[i]);
+        DrawVector(window, right_coord_plane, Null_dot, vectors[i]);
+    }
+
     char update_window_flag = TRUE;
-
-
-    //DrawVector(window, left_coord_plane, dot, vec);
-
 
     sf::Event event;
     while (window.isOpen())
@@ -178,7 +182,7 @@ static void DrawVector(sf::RenderWindow &window, const Plane &coord_plane,
                        const Dot &dot_start, const Vector &dir, const sf::Color color_line)
 {
 
-    Vector norm_res = ~ (Vector)dir;
+    Vector norm_res =   ~dir;
     Vector norm_ort =   (&norm_res); 
     
     Vector tendril1 = ~((norm_ort + norm_res)) * Len_tendril;

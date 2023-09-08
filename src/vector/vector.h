@@ -37,22 +37,15 @@ class Vector
 
         Vector  operator - ();
 
-        Vector  operator ~ ();
-        Vector  operator & ();
-        double  operator ! ();
+        Vector  operator ~ () const;
+        Vector  operator & () const;
+        double  operator ! () const;
 
 
     private:     
         double x_;
         double y_;
 };
-
-enum Vector_errors
-{
-    X_COORD_IS_NAN = 1 << 0, 
-    Y_COORD_IS_NAN = 1 << 1
-};
-
 
 Vector operator + (const Vector &vec1, const Vector &vec2);
 Vector operator - (const Vector &vec1, const Vector &vec2);
@@ -62,9 +55,25 @@ Vector operator * (const double scale, const Vector &vec);
 
 Vector operator / (const Vector &vec, const double scale);
 
+double operator , (const Vector &vec1, const Vector &vec2);
+double operator ^ (const Vector &vec1, const Vector &vec2);
 
+bool operator && (const Vector &vec1, const Vector &vec2);
+bool operator || (const Vector &vec1, const Vector &vec2);
+
+double operator << (const Vector &vec1, const Vector &vec2);
 
 typedef Vector Dot;
+
+// ===================================================================
+
+enum Vector_errors
+{
+    X_COORD_IS_NAN = 1 << 0, 
+    Y_COORD_IS_NAN = 1 << 1
+};
+
+//===================================================================
 
 const Dot Null_dot = Vector(0.0, 0.0);
 

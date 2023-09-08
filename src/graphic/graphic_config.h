@@ -46,4 +46,16 @@ const sf::Color Default_axis_color = sf::Color::Black;
 
 const useconds_t Mouse_press_delay = 50U;
 
+
+
+
+const Vector Example_vectors[] = 
+{
+    Vector(5, 5), 
+    Vector(-10, 20),
+    Vector(10, 2)
+};
+
+const size_t Count_example_vec = sizeof(Example_vectors) / sizeof(Vector);
+
 #endif //#endif _GRAPHIC_CONFIG_H_
